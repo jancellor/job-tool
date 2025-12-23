@@ -10,7 +10,7 @@
     </parent>
     <groupId>uk.jchancellor</groupId>
     <artifactId>spring-boot-demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>main-SNAPSHOT</version>
     <name>spring-boot-demo</name>
     <description>spring-boot-demo</description>
     <url/>
