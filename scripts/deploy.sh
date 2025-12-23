@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# NOTE: This script should not be run manually.
+# Deployment is automated via GitHub Actions (.github/workflows/deploy.yml)
+# which triggers on push to the main branch.
+
 # Configuration
 PROJECT_ID="voltaic-bridge-292822"
 REGION="europe-west1"
