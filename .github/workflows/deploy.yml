@@ -24,13 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java 25
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '25'
-          cache: 'maven'
-
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -43,16 +36,11 @@ jobs:
         run: |
           gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
-      - name: Build GraalVM native image
+      - name: Build Docker image
         run: |
-          ./mvnw -B -Pnative spring-boot:build-image
-
-      - name: Tag image for Artifact Registry
-        run: |
-          LOCAL_IMAGE="${{ env.SERVICE_NAME }}:${{ env.IMAGE_TAG }}"
           REMOTE_IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ env.IMAGE_TAG }}"
-          docker tag "${LOCAL_IMAGE}" "${REMOTE_IMAGE}"
-
+          docker build -t "${REMOTE_IMAGE}" .
+  
       - name: Push image to Artifact Registry
         run: |
           REMOTE_IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ env.IMAGE_TAG }}"
