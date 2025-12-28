@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
 
-# NOTE: This script should not be run manually.
-# Deployment is automated via GitHub Actions (.github/workflows/deploy.yml)
-# which triggers on push to the main branch.
+# NOTE: Deployment is automated via GitHub Actions (.github/workflows/deploy.yml).
+# This script is retained for debugging deployment issues when needed.
 
 # Configuration
 PROJECT_ID="voltaic-bridge-292822"
@@ -11,15 +10,10 @@ REGION="europe-west1"
 SERVICE_NAME="spring-boot-demo"
 REPOSITORY="default"
 IMAGE_TAG="main-SNAPSHOT"
-LOCAL_IMAGE="${SERVICE_NAME}:${IMAGE_TAG}"
 REMOTE_IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${SERVICE_NAME}:${IMAGE_TAG}"
 
-echo "=== Building GraalVM native image ==="
-./mvnw -Pnative spring-boot:build-image
-
-echo ""
-echo "=== Tagging image for Artifact Registry ==="
-docker tag "${LOCAL_IMAGE}" "${REMOTE_IMAGE}"
+echo "=== Building Docker image ==="
+docker build -t "${REMOTE_IMAGE}" .
 
 echo ""
 echo "=== Pushing image to Artifact Registry ==="
