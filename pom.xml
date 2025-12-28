@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>uk.jchancellor</groupId>
-    <artifactId>spring-boot-demo</artifactId>
+    <artifactId>job-tool</artifactId>
     <version>main-SNAPSHOT</version>
-    <name>spring-boot-demo</name>
-    <description>spring-boot-demo</description>
+    <name>job-tool</name>
+    <description>job-tool</description>
     <url/>
     <licenses>
         <license/>

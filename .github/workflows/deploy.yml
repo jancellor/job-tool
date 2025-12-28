@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: voltaic-bridge-292822
   REGION: europe-west1
-  SERVICE_NAME: spring-boot-demo
+  SERVICE_NAME: job-tool
   REPOSITORY: default
   IMAGE_TAG: main-SNAPSHOT
 

@@ -7,7 +7,7 @@ set -e
 # Configuration
 PROJECT_ID="voltaic-bridge-292822"
 REGION="europe-west1"
-SERVICE_NAME="spring-boot-demo"
+SERVICE_NAME="job-tool"
 REPOSITORY="default"
 IMAGE_TAG="main-SNAPSHOT"
 REMOTE_IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${SERVICE_NAME}:${IMAGE_TAG}"

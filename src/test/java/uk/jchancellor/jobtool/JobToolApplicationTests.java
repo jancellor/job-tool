@@ -1,10 +1,10 @@
-package uk.jchancellor.springbootdemo;
+package uk.jchancellor.jobtool;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringBootDemoApplicationTests {
+class JobToolApplicationTests {
 
     @Test
     void contextLoads() {
