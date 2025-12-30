@@ -3,9 +3,6 @@ package uk.jchancellor.jobtool;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.jchancellor.jobtool.jobs.Job;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -25,13 +22,13 @@ public class ApiController {
     }
 
     @PostMapping("/search")
-    public List<Job> search() {
-        return searcherService.searchAll();
+    public void search() {
+        searcherService.searchAll();
     }
 
     @PostMapping("/fetch")
-    public List<Job> fetch() {
-        return fetcherService.fetchAll();
+    public void fetch() {
+        fetcherService.fetchAll();
     }
 
     @PostMapping("/analyze")
