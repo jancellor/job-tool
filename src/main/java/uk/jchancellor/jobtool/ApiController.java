@@ -35,7 +35,7 @@ public class ApiController {
     }
 
     @PostMapping("/analyze")
-    public List<Job> analyze() {
-        return analyzerService.analyzeAll();
+    public void analyze() {
+        analyzerService.analyzeAll();
     }
 }

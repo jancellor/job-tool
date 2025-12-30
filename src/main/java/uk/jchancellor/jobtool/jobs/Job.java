@@ -10,6 +10,8 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -21,10 +23,21 @@ public class Job {
 
     @Id
     private String url;
-    private Instant lastFetchedAt;
-    private Instant lastAnalyzedAt;
+    private String title;
+    private String company;
+    private String location;
+    private String employmentType; // "remote", "contract"
+    private String salary;
+    private LocalDate publishedDate;
+    @Unindexed
+    private String snippet;
     @Unindexed
     private String description;
-    private String type; // "remote", "contract"
+    private String headline;
     private Integer remoteScore; // 0-5
+    private List<String> requiredLanguages;
+    private List<String> requiredSkills;
+    private List<String> optionalSkills;
+    private Instant lastFetchedAt;
+    private Instant lastAnalyzedAt;
 }

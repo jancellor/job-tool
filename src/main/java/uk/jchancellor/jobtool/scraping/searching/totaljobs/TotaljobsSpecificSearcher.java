@@ -31,7 +31,7 @@ public class TotaljobsSpecificSearcher implements SpecificSearcher<String, Total
                 .company(extractText(jobElement, "[data-at=job-item-company-name]"))
                 .location(extractText(jobElement, "[data-at=job-item-location]"))
                 .salary(extractText(jobElement, "[data-at=job-item-salary-info]"))
-                .summary(extractText(jobElement, "[data-at=jobcard-content]"))
+                .snippet(extractText(jobElement, "[data-at=jobcard-content]"))
                 .postedAgo(extractText(jobElement, "[data-at=job-item-timeago]"))
                 .labels(extractTexts(jobElement, "[data-at=job-item-top-label]"))
                 .build()).toList();

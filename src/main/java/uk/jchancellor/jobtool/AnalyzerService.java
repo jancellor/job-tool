@@ -1,12 +1,13 @@
 package uk.jchancellor.jobtool;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import uk.jchancellor.jobtool.analysis.DescriptionAnalyzer;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
 
-import java.util.List;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -15,29 +16,35 @@ public class AnalyzerService {
     private final JobRepository jobRepository;
     private final DescriptionAnalyzer descriptionAnalyzer;
     private final ObjectMerger objectMerger;
+    private final TaskExecutor taskExecutor;
 
     public AnalyzerService(
             JobRepository jobRepository,
             DescriptionAnalyzer descriptionAnalyzer,
-            ObjectMerger objectMerger) {
+            ObjectMerger objectMerger,
+            @Qualifier("applicationTaskExecutor") TaskExecutor taskExecutor) {
         this.jobRepository = jobRepository;
         this.descriptionAnalyzer = descriptionAnalyzer;
         this.objectMerger = objectMerger;
+        this.taskExecutor = taskExecutor;
     }
 
-    public List<Job> analyzeAll() {
+    public void analyzeAll() {
         log.info("Analyzing jobs");
-        return StreamSupport.stream(jobRepository.findAll().spliterator(), false)
+        StreamSupport.stream(jobRepository.findAll().spliterator(), false)
                 .filter(job -> job.getDescription() != null)
-                .map(this::analyzeAndUpdateJob)
-                .toList();
+                .forEach(this::analyzeAndUpdateJob);
     }
 
-    private Job analyzeAndUpdateJob(Job existingJob) {
-        log.info("Analyzing job={}", existingJob.getUrl());
-        Job analyzedJob = descriptionAnalyzer.analyze(existingJob.getDescription());
-        if (analyzedJob == null) return null;
-        Job updatedJob = objectMerger.merge(existingJob, analyzedJob);
-        return jobRepository.save(updatedJob);
+    private void analyzeAndUpdateJob(Job existingJob) {
+        taskExecutor.execute(() -> {
+            log.info("Analyzing job={}", existingJob.getUrl());
+            Job analyzedJob = descriptionAnalyzer.analyze(existingJob.getDescription());
+            if (analyzedJob == null) return;
+            // existing job fields take priority
+            Job updatedJob = objectMerger.merge(analyzedJob, existingJob);
+            jobRepository.save(updatedJob);
+            log.info("Finished analyzing job={}", existingJob.getUrl());
+        });
     }
 }

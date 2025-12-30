@@ -24,8 +24,11 @@ public class AnalysisResult {
         @JsonPropertyDescription("The company name")
         private String company;
 
+        @JsonPropertyDescription("Estimated salary or daily rate (an average if a range is given)")
+        private String salary;
+
         @JsonPropertyDescription("Summary of the role in one sentence")
-        private String summary;
+        private String headline;
 
         @JsonPropertyDescription("A score between 0 and 5 indicating how many days per week this position allows remote work")
         private Integer remoteScore;
@@ -38,7 +41,4 @@ public class AnalysisResult {
 
         @JsonPropertyDescription("The languages/skills explicitly mentioned as nice-to-have but not required")
         List<String> optionalSkills;
-
-        @JsonPropertyDescription("Estimated salary or daily rate, an average if a range is given")
-        private String compensation;
 }

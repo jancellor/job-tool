@@ -11,7 +11,7 @@ public class SearchRepository {
                 Search.builder()
                         .boardName("totaljobs")
                         .query("java")
-                        .type("contract")
+                        .employmentType("contract")
                         .remote(true)
                         .build());
     }

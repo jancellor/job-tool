@@ -11,12 +11,12 @@ import java.util.List;
 @ToString
 public class TotaljobsSearchResult {
     private final String jobId;
-    private final String title;
     private final String url;
+    private final String title;
     private final String company;
     private final String location;
     private final String salary;
-    private final String summary;
+    private final String snippet;
     private final String postedAgo;
     private final List<String> labels;
 }

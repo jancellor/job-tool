@@ -16,10 +16,10 @@ public class TotaljobsSearchAdapter implements SearcherAdapter<String, Totaljobs
             builder.pathSegment(pathSegment);
         }
 
-        if (search.getType() != null) {
-            if (search.getType().equalsIgnoreCase("contract")) {
+        if (search.getEmploymentType() != null) {
+            if (search.getEmploymentType().equalsIgnoreCase("contract")) {
                 builder.queryParam("wt", "20");
-            } else if (search.getType().equalsIgnoreCase("permanent")) {
+            } else if (search.getEmploymentType().equalsIgnoreCase("permanent")) {
                 builder.queryParam("wt", "10");
             }
         }
@@ -36,6 +36,11 @@ public class TotaljobsSearchAdapter implements SearcherAdapter<String, Totaljobs
     public Job adaptResult(TotaljobsSearchResult result) {
         return Job.builder()
                 .url(result.getUrl())
+                .title(result.getTitle())
+                .company(result.getCompany())
+                .location(result.getLocation())
+                .salary(result.getSalary())
+                .snippet(result.getSnippet())
                 .build();
     }
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
+import java.time.Instant;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
@@ -20,6 +22,7 @@ public class Search {
     private Long id;
     private String boardName;
     private String query;
-    private String type; // contract/remote
+    private String employmentType; // contract/remote
     private Boolean remote;
+    private Instant lastSearchedAt;
 }
