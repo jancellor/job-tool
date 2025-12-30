@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
@@ -38,6 +39,11 @@ public class Job {
     private List<String> requiredLanguages;
     private List<String> requiredSkills;
     private List<String> optionalSkills;
+    @Setter
+    private Instant lastSearchedAt;
+    @Setter
     private Instant lastFetchedAt;
+    @Setter
     private Instant lastAnalyzedAt;
+
 }

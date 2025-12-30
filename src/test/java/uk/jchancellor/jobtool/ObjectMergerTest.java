@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import uk.jchancellor.jobtool.jobs.Job;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @JsonTest
@@ -23,5 +24,12 @@ class ObjectMergerTest {
         Job mergedJob = objectMerger.merge(original, overrides);
         assertEquals("Desc", mergedJob.getDescription());
         assertNull(original.getDescription());
+    }
+
+    @Test
+    void testNulls() {
+        Job job = Job.builder().build();
+        assertNotNull(objectMerger.merge(job, null));
+        assertNotNull(objectMerger.merge(null, job));
     }
 }

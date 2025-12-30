@@ -8,6 +8,7 @@ import uk.jchancellor.jobtool.scraping.searching.GenericSearcher;
 import uk.jchancellor.jobtool.searches.Search;
 import uk.jchancellor.jobtool.searches.SearchRepository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -18,23 +19,36 @@ public class SearcherService {
     private final SearchRepository searchRepository;
     private final JobRepository jobRepository;
     private final GenericSearcher genericSearcher;
+    private final ObjectMerger objectMerger;
 
-    public SearcherService(SearchRepository searchRepository, JobRepository jobRepository) {
+    public SearcherService(
+            SearchRepository searchRepository,
+            JobRepository jobRepository, ObjectMerger objectMerger) {
         this.searchRepository = searchRepository;
         this.jobRepository = jobRepository;
+        this.objectMerger = objectMerger;
         this.genericSearcher = new GenericSearcher();
     }
 
     public List<Job> searchAll() {
         log.info("Searching boards");
+        Instant now = Instant.now();
         return searchRepository.findAll().stream()
-                .flatMap(this::searchAndSaveJobs)
+                .flatMap(search -> search(search, now))
                 .toList();
     }
 
-    private Stream<Job> searchAndSaveJobs(Search search) {
+    private Stream<Job> search(Search search, Instant now) {
         log.info("Searching search={}", search);
         return genericSearcher.search(search).stream()
-                .map(jobRepository::save);
+                .map(searchedJob -> upsertJob(searchedJob, now));
+    }
+
+    private Job upsertJob(Job searchedJob, Instant now) {
+        Job existingJob = jobRepository.findById(searchedJob.getUrl()).orElse(null);
+        // new fields take priority
+        Job updatedJob = objectMerger.merge(existingJob, searchedJob);
+        updatedJob.setLastSearchedAt(now);
+        return jobRepository.save(updatedJob);
     }
 }

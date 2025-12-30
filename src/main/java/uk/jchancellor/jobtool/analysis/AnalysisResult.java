@@ -18,15 +18,6 @@ import java.util.List;
 @JsonClassDescription("A result of analyzing a job description with fields set to null if unknown")
 public class AnalysisResult {
 
-        @JsonPropertyDescription("The job title")
-        private String jobTitle;
-
-        @JsonPropertyDescription("The company name")
-        private String company;
-
-        @JsonPropertyDescription("Estimated salary or daily rate (an average if a range is given)")
-        private String salary;
-
         @JsonPropertyDescription("Summary of the role in one sentence")
         private String headline;
 

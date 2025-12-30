@@ -19,9 +19,6 @@ public class DescriptionAnalyzer {
                 .call()
                 .entity(AnalysisResult.class);
         return result == null ? null : Job.builder()
-                .title(result.getJobTitle())
-                .company(result.getCompany())
-                .salary(result.getSalary())
                 .headline(result.getHeadline())
                 .remoteScore(result.getRemoteScore())
                 .requiredLanguages(result.getRequiredLanguages())

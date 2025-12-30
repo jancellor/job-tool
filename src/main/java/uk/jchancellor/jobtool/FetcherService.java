@@ -6,6 +6,7 @@ import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
 import uk.jchancellor.jobtool.scraping.fetching.GenericFetcher;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -25,16 +26,18 @@ public class FetcherService {
 
     public List<Job> fetchAll() {
         log.info("Fetching jobs");
+        Instant now = Instant.now();
         return StreamSupport.stream(jobRepository.findAll().spliterator(), false)
-                .map(this::fetchAndUpdateJob)
+                .map(existingJob -> fetchAndUpdateJob(existingJob, now))
                 .toList();
     }
 
-    private Job fetchAndUpdateJob(Job existingJob) {
+    private Job fetchAndUpdateJob(Job existingJob, Instant now) {
         log.info("Fetching job={}", existingJob.getUrl());
         Job fetchedJob = genericFetcher.fetch(existingJob.getUrl());
-        if (fetchedJob == null) return null;
+        // fetched fields take priority
         Job updatedJob = objectMerger.merge(existingJob, fetchedJob);
+        updatedJob.setLastFetchedAt(now);
         return jobRepository.save(updatedJob);
     }
 }

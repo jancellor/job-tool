@@ -18,6 +18,8 @@ public class ObjectMerger {
 
     @SneakyThrows
     public <T> T merge(T object, T overrides) {
+        if (object == null) return overrides;
+        if (overrides == null) return object;
         @SuppressWarnings("unchecked")
         T copy = mergeMapper.convertValue(object, (Class<T>) object.getClass());
         return mergeMapper.updateValue(copy, overrides);

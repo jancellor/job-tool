@@ -4,6 +4,8 @@ import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.searches.Search;
 
 public interface SearcherAdapter<S, R> {
+    boolean canHandle(String boardName);
+
     S adaptSearch(Search search);
 
     Job adaptResult(R result);

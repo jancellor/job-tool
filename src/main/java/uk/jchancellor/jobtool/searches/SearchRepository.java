@@ -13,6 +13,12 @@ public class SearchRepository {
                         .query("java")
                         .employmentType("contract")
                         .remote(true)
+                        .build(),
+                Search.builder()
+                        .boardName("cwjobs")
+                        .query("java")
+                        .employmentType("contract")
+                        .remote(true)
                         .build());
     }
 }

@@ -17,7 +17,7 @@ public class AdaptingSearcher<S, R> implements Searcher {
 
     @Override
     public boolean canHandle(String boardName) {
-        return searcher.canHandle(boardName);
+        return adapter.canHandle(boardName);
     }
 
     @Override

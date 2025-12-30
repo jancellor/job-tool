@@ -8,6 +8,7 @@ import uk.jchancellor.jobtool.analysis.DescriptionAnalyzer;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
 
+import java.time.Instant;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -31,18 +32,19 @@ public class AnalyzerService {
 
     public void analyzeAll() {
         log.info("Analyzing jobs");
+        Instant now = Instant.now();
         StreamSupport.stream(jobRepository.findAll().spliterator(), false)
                 .filter(job -> job.getDescription() != null)
-                .forEach(this::analyzeAndUpdateJob);
+                .forEach(existingJob -> analyzeAndUpdateJob(existingJob, now));
     }
 
-    private void analyzeAndUpdateJob(Job existingJob) {
+    private void analyzeAndUpdateJob(Job existingJob, Instant now) {
         taskExecutor.execute(() -> {
             log.info("Analyzing job={}", existingJob.getUrl());
             Job analyzedJob = descriptionAnalyzer.analyze(existingJob.getDescription());
-            if (analyzedJob == null) return;
-            // existing job fields take priority
+            // existing fields take priority
             Job updatedJob = objectMerger.merge(analyzedJob, existingJob);
+            updatedJob.setLastAnalyzedAt(now);
             jobRepository.save(updatedJob);
             log.info("Finished analyzing job={}", existingJob.getUrl());
         });

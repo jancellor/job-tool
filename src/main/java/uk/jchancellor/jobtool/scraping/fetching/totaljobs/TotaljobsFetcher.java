@@ -11,17 +11,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 public class TotaljobsFetcher implements Fetcher {
 
     @Override
     public boolean canHandle(String url) {
-        return url != null && url.contains("totaljobs.com");
+        return url != null && Stream.of("totaljobs.com", "cwjobs.co.uk").anyMatch(url::contains);
     }
 
     @Override
     public Job fetch(String url) {
-        TotaljobsFetchResult result = fetchDetailed(url);
+        String html = PlaywrightInvoker.getContent(url);
+        TotaljobsFetchResult result = parseJob(html, url);
         return Job.builder()
                 .url(url)
                 .title(result.getTitle())
@@ -34,12 +36,7 @@ public class TotaljobsFetcher implements Fetcher {
                 .build();
     }
 
-    public TotaljobsFetchResult fetchDetailed(String url) {
-        String html = PlaywrightInvoker.getContent(url);
-        return parseJobDetails(url, html);
-    }
-
-    private TotaljobsFetchResult parseJobDetails(String url, String html) {
+    private TotaljobsFetchResult parseJob(String html, String url) {
         Document doc = Jsoup.parse(html);
         var jobAdContent = doc.selectFirst("#job-ad-content");
         var element = jobAdContent != null ? jobAdContent : doc;

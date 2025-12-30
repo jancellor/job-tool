@@ -8,25 +8,24 @@ import org.jsoup.select.Elements;
 import uk.jchancellor.jobtool.scraping.PlaywrightInvoker;
 import uk.jchancellor.jobtool.scraping.searching.SpecificSearcher;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Slf4j
 public class TotaljobsSpecificSearcher implements SpecificSearcher<String, TotaljobsSearchResult> {
-    public boolean canHandle(String boardName) {
-        return boardName.equals("totaljobs");
-    }
-
     public List<TotaljobsSearchResult> search(String url) {
+        log.info("Searching url={}", url);
         String html = PlaywrightInvoker.getContent(url);
-        return extractJobs(html);
+        return extractJobs(html, url);
     }
 
-    private List<TotaljobsSearchResult> extractJobs(String html) {
+    private List<TotaljobsSearchResult> extractJobs(String html, String url) {
         Document doc = Jsoup.parse(html);
         Elements jobElements = doc.select("[data-at=job-item]");
         return jobElements.stream().map(jobElement -> TotaljobsSearchResult.builder()
                 .jobId(jobElement.attr("id"))
-                .url(extractHref(jobElement, "[data-at=job-item-title]"))
+                .url(extractHref(jobElement, "[data-at=job-item-title]", url))
                 .title(extractText(jobElement, "[data-at=job-item-title]"))
                 .company(extractText(jobElement, "[data-at=job-item-company-name]"))
                 .location(extractText(jobElement, "[data-at=job-item-location]"))
@@ -42,15 +41,17 @@ public class TotaljobsSpecificSearcher implements SpecificSearcher<String, Total
         return element != null ? element.text().trim() : "";
     }
 
-    private String extractHref(Element parent, String cssQuery) {
+    private String extractHref(Element parent, String cssQuery, String url) {
         Element element = parent.selectFirst(cssQuery);
         if (element != null && element.hasAttr("href")) {
             String href = element.attr("href");
-            // Make absolute URL if relative
-            if (href.startsWith("/")) {
-                return "https://www.totaljobs.com" + href;
+            try {
+                // Make absolute URL if relative
+                URI base = new URI(url);
+                return base.resolve(href).toString();
+            } catch (URISyntaxException e) {
+                log.warn("Failed to resolve href '{}' with base URL '{}'", href, url, e);
             }
-            return href;
         }
         return "";
     }
