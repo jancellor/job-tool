@@ -2,8 +2,10 @@
 FROM mcr.microsoft.com/playwright/java:v1.57.0-noble AS build
 WORKDIR /app
 COPY pom.xml .
+# Download dependencies (cached layer if pom.xml unchanged)
+RUN mvn dependency:go-offline -B
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
 # Runtime stage
 FROM mcr.microsoft.com/playwright/java:v1.57.0-noble

@@ -11,7 +11,7 @@ public class PlaywrightInvoker {
 
     public static String getContent(String url) {
         try (Playwright playwright = Playwright.create();
-                Browser browser = playwright.firefox().launch(
+                Browser browser = playwright.webkit().launch(
                         new BrowserType.LaunchOptions().setHeadless(true));
                 BrowserContext context = browser.newContext()) {
             Page page = context.newPage();
