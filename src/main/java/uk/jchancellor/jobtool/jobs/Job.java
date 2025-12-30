@@ -21,10 +21,10 @@ public class Job {
 
     @Id
     private String url;
-    @Unindexed
     private Instant lastFetchedAt;
     private Instant lastAnalyzedAt;
+    @Unindexed
     private String description;
     private String type; // "remote", "contract"
-    private Integer remoteScore; // 0-10
+    private Integer remoteScore; // 0-5
 }

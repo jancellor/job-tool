@@ -32,6 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
+### Spring Config ###
+application-local.properties
+application-local.yml
+application-local.yaml
+
 ### Other ###
 /.sdkmanrc
 /antibot-findings.md

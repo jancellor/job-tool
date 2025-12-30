@@ -13,10 +13,15 @@ public class ApiController {
 
     private final SearcherService searcherService;
     private final FetcherService fetcherService;
+    private final AnalyzerService analyzerService;
 
-    public ApiController(SearcherService searcherService, FetcherService fetcherService) {
+    public ApiController(
+            SearcherService searcherService,
+            FetcherService fetcherService,
+            AnalyzerService analyzerService) {
         this.searcherService = searcherService;
         this.fetcherService = fetcherService;
+        this.analyzerService = analyzerService;
     }
 
     @PostMapping("/search")
@@ -27,5 +32,10 @@ public class ApiController {
     @PostMapping("/fetch")
     public List<Job> fetch() {
         return fetcherService.fetchAll();
+    }
+
+    @PostMapping("/analyze")
+    public List<Job> analyze() {
+        return analyzerService.analyzeAll();
     }
 }

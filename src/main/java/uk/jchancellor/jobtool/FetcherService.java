@@ -15,9 +15,11 @@ public class FetcherService {
 
     private final JobRepository jobRepository;
     private final GenericFetcher genericFetcher;
+    private final ObjectMerger objectMerger;
 
-    public FetcherService(JobRepository jobRepository) {
+    public FetcherService(JobRepository jobRepository, ObjectMerger objectMerger) {
         this.jobRepository = jobRepository;
+        this.objectMerger = objectMerger;
         this.genericFetcher = new GenericFetcher();
     }
 
@@ -29,10 +31,10 @@ public class FetcherService {
     }
 
     private Job fetchAndUpdateJob(Job existingJob) {
+        log.info("Fetching job={}", existingJob.getUrl());
         Job fetchedJob = genericFetcher.fetch(existingJob.getUrl());
-        if (fetchedJob != null) {
-            return jobRepository.save(fetchedJob);
-        }
-        return null;
+        if (fetchedJob == null) return null;
+        Job updatedJob = objectMerger.merge(existingJob, fetchedJob);
+        return jobRepository.save(updatedJob);
     }
 }
