@@ -22,12 +22,13 @@ public class FetcherService {
 
     public FetcherService(
             JobRepository jobRepository,
+            GenericFetcher genericFetcher,
             ObjectMerger objectMerger,
             @Qualifier("applicationTaskExecutor") TaskExecutor taskExecutor) {
         this.jobRepository = jobRepository;
+        this.genericFetcher = genericFetcher;
         this.objectMerger = objectMerger;
         this.taskExecutor = taskExecutor;
-        this.genericFetcher = new GenericFetcher();
     }
 
     public void fetchAll() {

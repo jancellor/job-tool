@@ -4,7 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import uk.jchancellor.jobtool.jobs.Job;
-import uk.jchancellor.jobtool.scraping.PlaywrightInvoker;
+import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.scraping.fetching.Fetcher;
 
 import java.time.LocalDate;
@@ -15,14 +15,18 @@ import java.util.stream.Stream;
 
 public class TotaljobsFetcher implements Fetcher {
 
-    @Override
+    private final ContentProvider contentProvider;
+
+    public TotaljobsFetcher(ContentProvider contentProvider) {
+        this.contentProvider = contentProvider;
+    }
+
     public boolean canHandle(String url) {
         return url != null && Stream.of("totaljobs.com", "cwjobs.co.uk").anyMatch(url::contains);
     }
 
-    @Override
     public Job fetch(String url) {
-        String html = PlaywrightInvoker.getContent(url);
+        String html = contentProvider.getContent(url);
         TotaljobsFetchResult result = parseJob(html, url);
         return Job.builder()
                 .url(url)
@@ -54,7 +58,7 @@ public class TotaljobsFetcher implements Fetcher {
 
     private String extractText(Element searchScope, String cssQuery) {
         var element = searchScope.selectFirst(cssQuery);
-        return element != null ? element.text().trim() : "";
+        return element != null ? element.text().trim() : null;
     }
 
     private LocalDate parsePublishedDate(String dateString) {

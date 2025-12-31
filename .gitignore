@@ -40,3 +40,4 @@ application-local.yaml
 ### Other ###
 /.sdkmanrc
 /antibot-findings.md
+example-html-files/

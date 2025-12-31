@@ -25,13 +25,14 @@ public class SearcherService {
     public SearcherService(
             SearchRepository searchRepository,
             JobRepository jobRepository,
+            GenericSearcher genericSearcher,
             ObjectMerger objectMerger,
             @Qualifier("applicationTaskExecutor") TaskExecutor taskExecutor) {
         this.searchRepository = searchRepository;
         this.jobRepository = jobRepository;
+        this.genericSearcher = genericSearcher;
         this.objectMerger = objectMerger;
         this.taskExecutor = taskExecutor;
-        this.genericSearcher = new GenericSearcher();
     }
 
     public void searchAll() {
@@ -52,8 +53,8 @@ public class SearcherService {
         taskExecutor.execute(() -> {
             log.info("Upserting job={}", searchedJob.getUrl());
             Job existingJob = jobRepository.findById(searchedJob.getUrl()).orElse(null);
-            // new fields take priority
-            Job updatedJob = objectMerger.merge(existingJob, searchedJob);
+            // existing fields take priority
+            Job updatedJob = objectMerger.merge(searchedJob, existingJob);
             updatedJob.setLastSearchedAt(now);
             jobRepository.save(updatedJob);
             log.info("Finished upserting job={}", searchedJob.getUrl());

@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import uk.jchancellor.jobtool.scraping.PlaywrightInvoker;
+import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.scraping.searching.SpecificSearcher;
 
 import java.net.URI;
@@ -14,9 +14,16 @@ import java.util.List;
 
 @Slf4j
 public class TotaljobsSpecificSearcher implements SpecificSearcher<String, TotaljobsSearchResult> {
+
+    private final ContentProvider contentProvider;
+
+    public TotaljobsSpecificSearcher(ContentProvider contentProvider) {
+        this.contentProvider = contentProvider;
+    }
+
     public List<TotaljobsSearchResult> search(String url) {
         log.info("Searching url={}", url);
-        String html = PlaywrightInvoker.getContent(url);
+        String html = contentProvider.getContent(url);
         return extractJobs(html, url);
     }
 
@@ -38,7 +45,7 @@ public class TotaljobsSpecificSearcher implements SpecificSearcher<String, Total
 
     private String extractText(Element parent, String cssQuery) {
         Element element = parent.selectFirst(cssQuery);
-        return element != null ? element.text().trim() : "";
+        return element != null ? element.text().trim() : null;
     }
 
     private String extractHref(Element parent, String cssQuery, String url) {
@@ -53,7 +60,7 @@ public class TotaljobsSpecificSearcher implements SpecificSearcher<String, Total
                 log.warn("Failed to resolve href '{}' with base URL '{}'", href, url, e);
             }
         }
-        return "";
+        return null;
     }
 
     private List<String> extractTexts(Element parent, String cssQuery) {
