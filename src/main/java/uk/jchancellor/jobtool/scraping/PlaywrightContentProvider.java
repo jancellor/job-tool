@@ -1,5 +1,6 @@
 package uk.jchancellor.jobtool.scraping;
 
+import com.google.common.util.concurrent.RateLimiter;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
@@ -25,7 +26,14 @@ public class PlaywrightContentProvider implements ContentProvider {
     @Value("${job-tool.debug-save-html:false}")
     private boolean debugSaveHtml;
 
+    private final RateLimiter rateLimiter;
+
+    public PlaywrightContentProvider(RateLimiter rateLimiter) {
+        this.rateLimiter = rateLimiter;
+    }
+
     public String getContent(String url) {
+        rateLimiter.acquire();
         try (Playwright playwright = Playwright.create();
                 Browser browser = playwright.webkit().launch(
                         new BrowserType.LaunchOptions().setHeadless(true));
