@@ -18,12 +18,10 @@ public class GenericSearcher {
                 new TotaljobsSearcher(contentProvider));
     }
 
-    public List<Job> search(Search search) {
-        for (Searcher searcher : searchers) {
-            if (searcher.canHandle(search.getBoardName())) {
-                return searcher.search(search);
-            }
-        }
-        return null;
+    public List<String> search(Search search) {
+        return searchers.stream()
+                .filter(searcher -> searcher.canHandle(search.getBoardName()))
+                .flatMap(searcher -> searcher.search(search).stream())
+                .toList();
     }
 }

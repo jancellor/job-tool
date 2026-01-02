@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @ToString
 @JsonClassDescription("A result of analyzing a job description with fields set to null if unknown")
-public class AnalysisResult {
+public class DescriptionAnalysis {
 
         @JsonPropertyDescription("Summary of the role in one sentence")
         private String headline;

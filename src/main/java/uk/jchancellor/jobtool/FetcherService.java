@@ -43,8 +43,8 @@ public class FetcherService {
             log.info("Fetching job={}", existingJob.getUrl());
             Job fetchedJob = genericFetcher.fetch(existingJob.getUrl());
             // fetched fields take priority
-            Job updatedJob = objectMerger.merge(existingJob, fetchedJob);
-            updatedJob.setLastFetchedAt(now);
+            Job updatedJob = objectMerger.merge(existingJob, fetchedJob)
+                    .withLastFetchedAt(now);
             jobRepository.save(updatedJob);
             log.info("Finished fetching job={}", existingJob.getUrl());
         });

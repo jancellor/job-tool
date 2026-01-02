@@ -2,7 +2,6 @@ package uk.jchancellor.jobtool.analysis;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
-import uk.jchancellor.jobtool.jobs.Job;
 
 @Service
 public class DescriptionAnalyzer {
@@ -13,17 +12,10 @@ public class DescriptionAnalyzer {
         this.chatClient = chatClientBuilder.build();
     }
 
-    public Job analyze(String description) {
-        AnalysisResult result = chatClient.prompt()
+    public DescriptionAnalysis analyze(String description) {
+        return chatClient.prompt()
                 .user("Analyze the following job description and extract the requested information:\n\n" + description)
                 .call()
-                .entity(AnalysisResult.class);
-        return result == null ? null : Job.builder()
-                .headline(result.getHeadline())
-                .remoteScore(result.getRemoteScore())
-                .requiredLanguages(result.getRequiredLanguages())
-                .requiredSkills(result.getRequiredSkills())
-                .optionalSkills(result.getOptionalSkills())
-                .build();
+                .entity(DescriptionAnalysis.class);
     }
 }

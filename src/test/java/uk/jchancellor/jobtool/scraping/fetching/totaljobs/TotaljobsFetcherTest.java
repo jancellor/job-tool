@@ -34,7 +34,6 @@ class TotaljobsFetcherTest {
     @Test
     void testFetchTotaljobsJob() {
         TotaljobsFetcher fetcher = new TotaljobsFetcher(contentProvider);
-        // This URL must match the fixture file name: totaljobs.com-job-106375756.html
         String testUrl = "https://www.totaljobs.com/job/2026-software-engineering-graduate/thales-group-job106375756";
         Job result = fetcher.fetch(testUrl);
         log.info("Fetch result: {}", result);

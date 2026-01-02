@@ -1,16 +1,15 @@
 package uk.jchancellor.jobtool.scraping.searching;
 
-import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.searches.Search;
 
 import java.util.List;
 
-public class AdaptingSearcher<S, R> implements Searcher {
+public class AdaptingSearcher<S> implements Searcher {
 
-    private final SpecificSearcher<S, R> searcher;
-    private final SearcherAdapter<S, R> adapter;
+    private final SpecificSearcher<S> searcher;
+    private final SearcherAdapter<S> adapter;
 
-    public AdaptingSearcher(SpecificSearcher<S, R> searcher, SearcherAdapter<S, R> adapter) {
+    public AdaptingSearcher(SpecificSearcher<S> searcher, SearcherAdapter<S> adapter) {
         this.searcher = searcher;
         this.adapter = adapter;
     }
@@ -21,9 +20,8 @@ public class AdaptingSearcher<S, R> implements Searcher {
     }
 
     @Override
-    public List<Job> search(Search search) {
+    public List<String> search(Search search) {
         return searcher.search(adapter.adaptSearch(search)).stream()
-                .map(adapter::adaptResult)
                 .toList();
     }
 }

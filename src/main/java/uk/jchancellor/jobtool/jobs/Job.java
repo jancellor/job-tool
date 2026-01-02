@@ -6,9 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
+import lombok.With;
 import org.springframework.data.annotation.Id;
+import uk.jchancellor.jobtool.scraping.fetching.totaljobs.TotaljobsJob;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -24,6 +25,13 @@ public class Job {
 
     @Id
     private String url;
+    @With
+    private Instant lastSearchedAt;
+    @With
+    private Instant lastFetchedAt;
+    @With
+    private Instant lastAnalyzedAt;
+    private TotaljobsJob totaljobsJob;
     private String title;
     private String company;
     private String location;
@@ -39,11 +47,5 @@ public class Job {
     private List<String> requiredLanguages;
     private List<String> requiredSkills;
     private List<String> optionalSkills;
-    @Setter
-    private Instant lastSearchedAt;
-    @Setter
-    private Instant lastFetchedAt;
-    @Setter
-    private Instant lastAnalyzedAt;
 
 }

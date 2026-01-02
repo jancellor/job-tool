@@ -18,11 +18,10 @@ public class GenericFetcher {
     }
 
     public Job fetch(String url) {
-        for (Fetcher fetcher : fetchers) {
-            if (fetcher.canHandle(url)) {
-                return fetcher.fetch(url);
-            }
-        }
-        return null;
+        return fetchers.stream()
+                .filter(fetcher -> fetcher.canHandle(url))
+                .findFirst()
+                .map(fetcher -> fetcher.fetch(url))
+                .orElse(null);
     }
 }

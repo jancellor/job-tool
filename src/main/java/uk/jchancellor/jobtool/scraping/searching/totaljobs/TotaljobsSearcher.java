@@ -5,7 +5,7 @@ import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.scraping.searching.AdaptingSearcher;
 
 @Slf4j
-public class TotaljobsSearcher extends AdaptingSearcher<String, TotaljobsSearchResult> {
+public class TotaljobsSearcher extends AdaptingSearcher<String> {
     public TotaljobsSearcher(ContentProvider contentProvider) {
         super(
                 new TotaljobsSpecificSearcher(contentProvider),

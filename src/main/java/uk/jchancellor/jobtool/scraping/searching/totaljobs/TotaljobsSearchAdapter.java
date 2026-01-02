@@ -1,8 +1,6 @@
 package uk.jchancellor.jobtool.scraping.searching.totaljobs;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponentsBuilder;
-import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.searching.SearcherAdapter;
 import uk.jchancellor.jobtool.searches.Search;
 
@@ -10,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class TotaljobsSearchAdapter implements SearcherAdapter<String, TotaljobsSearchResult> {
+public class TotaljobsSearchAdapter implements SearcherAdapter<String> {
 
     @Override
     public boolean canHandle(String boardName) {
@@ -52,16 +50,5 @@ public class TotaljobsSearchAdapter implements SearcherAdapter<String, Totaljobs
                 "totaljobs", "https://www.totaljobs.com"
         );
         return Optional.ofNullable(baseUrls.get(boardName)).orElseThrow();
-    }
-
-    public Job adaptResult(TotaljobsSearchResult result) {
-        return Job.builder()
-                .url(result.getUrl())
-                .title(result.getTitle())
-                .company(result.getCompany())
-                .location(result.getLocation())
-                .salary(result.getSalary())
-                .snippet(result.getSnippet())
-                .build();
     }
 }

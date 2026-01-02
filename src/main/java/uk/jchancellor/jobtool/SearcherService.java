@@ -19,19 +19,16 @@ public class SearcherService {
     private final SearchRepository searchRepository;
     private final JobRepository jobRepository;
     private final GenericSearcher genericSearcher;
-    private final ObjectMerger objectMerger;
     private final TaskExecutor taskExecutor;
 
     public SearcherService(
             SearchRepository searchRepository,
             JobRepository jobRepository,
             GenericSearcher genericSearcher,
-            ObjectMerger objectMerger,
             @Qualifier("applicationTaskExecutor") TaskExecutor taskExecutor) {
         this.searchRepository = searchRepository;
         this.jobRepository = jobRepository;
         this.genericSearcher = genericSearcher;
-        this.objectMerger = objectMerger;
         this.taskExecutor = taskExecutor;
     }
 
@@ -45,19 +42,18 @@ public class SearcherService {
         taskExecutor.execute(() -> {
             log.info("Searching search={}", search);
             genericSearcher.search(search)
-                    .forEach(searchedJob -> upsertJob(searchedJob, now));
+                    .forEach(jobUrl -> upsertJob(jobUrl, now));
         });
     }
 
-    private void upsertJob(Job searchedJob, Instant now) {
+    private void upsertJob(String jobUrl, Instant now) {
         taskExecutor.execute(() -> {
-            log.info("Upserting job={}", searchedJob.getUrl());
-            Job existingJob = jobRepository.findById(searchedJob.getUrl()).orElse(null);
-            // existing fields take priority
-            Job updatedJob = objectMerger.merge(searchedJob, existingJob);
-            updatedJob.setLastSearchedAt(now);
+            log.info("Upserting URL={}", jobUrl);
+            Job updatedJob = jobRepository.findById(jobUrl)
+                    .orElse(Job.builder().url(jobUrl).build())
+                    .withLastSearchedAt(now);
             jobRepository.save(updatedJob);
-            log.info("Finished upserting job={}", searchedJob.getUrl());
+            log.info("Finished upserting job={}", jobUrl);
         });
     }
 }

@@ -7,10 +7,6 @@ import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.scraping.fetching.Fetcher;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Locale;
 import java.util.stream.Stream;
 
 public class TotaljobsFetcher implements Fetcher {
@@ -27,30 +23,20 @@ public class TotaljobsFetcher implements Fetcher {
 
     public Job fetch(String url) {
         String html = contentProvider.getContent(url);
-        TotaljobsFetchResult result = parseJob(html, url);
-        return Job.builder()
-                .url(url)
-                .title(result.getTitle())
-                .company(result.getCompany())
-                .location(result.getLocation())
-                .employmentType(result.getEmploymentType())
-                .salary(result.getSalary())
-                .publishedDate(parsePublishedDate(result.getPublishedDate()))
-                .description(result.getDescription())
-                .build();
+        TotaljobsJob job = parseJob(html);
+        return Job.builder().totaljobsJob(job).build();
     }
 
-    private TotaljobsFetchResult parseJob(String html, String url) {
+    private TotaljobsJob parseJob(String html) {
         Document doc = Jsoup.parse(html);
         var jobAdContent = doc.selectFirst("#job-ad-content");
         var element = jobAdContent != null ? jobAdContent : doc;
-        return TotaljobsFetchResult.builder()
-                .url(url)
+        return TotaljobsJob.builder()
                 .title(extractText(element, "[data-at=header-job-title]"))
                 .company(extractText(element, "[data-at=metadata-company-name]"))
                 .location(extractText(element, "[data-at=metadata-location]"))
                 .employmentType(extractText(element, "[data-at=metadata-work-type]"))
-                .publishedDate(extractText(element, "[data-at=metadata-online-date]"))
+                .postedAgo(extractText(element, "[data-at=metadata-online-date]"))
                 .salary(extractText(element, "[data-at=metadata-salary]"))
                 .description(extractText(element, "[data-at=section-text-jobDescription-content]"))
                 .build();
@@ -59,17 +45,5 @@ public class TotaljobsFetcher implements Fetcher {
     private String extractText(Element searchScope, String cssQuery) {
         var element = searchScope.selectFirst(cssQuery);
         return element != null ? element.text().trim() : null;
-    }
-
-    private LocalDate parsePublishedDate(String dateString) {
-        if (dateString == null || dateString.isEmpty()) {
-            return null;
-        }
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH);
-            return LocalDate.parse(dateString, formatter);
-        } catch (DateTimeParseException e) {
-            return null;
-        }
     }
 }

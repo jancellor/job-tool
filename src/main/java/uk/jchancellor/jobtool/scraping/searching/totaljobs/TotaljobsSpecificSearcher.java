@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @Slf4j
-public class TotaljobsSpecificSearcher implements SpecificSearcher<String, TotaljobsSearchResult> {
+public class TotaljobsSpecificSearcher implements SpecificSearcher<String> {
 
     private final ContentProvider contentProvider;
 
@@ -21,26 +21,18 @@ public class TotaljobsSpecificSearcher implements SpecificSearcher<String, Total
         this.contentProvider = contentProvider;
     }
 
-    public List<TotaljobsSearchResult> search(String url) {
+    public List<String> search(String url) {
         log.info("Searching url={}", url);
         String html = contentProvider.getContent(url);
         return extractJobs(html, url);
     }
 
-    private List<TotaljobsSearchResult> extractJobs(String html, String url) {
+    private List<String> extractJobs(String html, String url) {
         Document doc = Jsoup.parse(html);
         Elements jobElements = doc.select("[data-at=job-item]");
-        return jobElements.stream().map(jobElement -> TotaljobsSearchResult.builder()
-                .jobId(jobElement.attr("id"))
-                .url(extractHref(jobElement, "[data-at=job-item-title]", url))
-                .title(extractText(jobElement, "[data-at=job-item-title]"))
-                .company(extractText(jobElement, "[data-at=job-item-company-name]"))
-                .location(extractText(jobElement, "[data-at=job-item-location]"))
-                .salary(extractText(jobElement, "[data-at=job-item-salary-info]"))
-                .snippet(extractText(jobElement, "[data-at=jobcard-content]"))
-                .postedAgo(extractText(jobElement, "[data-at=job-item-timeago]"))
-                .labels(extractTexts(jobElement, "[data-at=job-item-top-label]"))
-                .build()).toList();
+        return jobElements.stream()
+                .map(jobElement -> extractHref(jobElement, "[data-at=job-item-title]", url))
+                .toList();
     }
 
     private String extractText(Element parent, String cssQuery) {

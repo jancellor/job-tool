@@ -21,21 +21,21 @@ class TotaljobsSpecificSearcherTest {
     void searchTotaljobsPrintsDom() {
         TotaljobsSpecificSearcher searcher = new TotaljobsSpecificSearcher(contentProvider);
         String url = "https://www.totaljobs.com/jobs/java?wt=20&wt=50&page=1";
-        List<TotaljobsSearchResult> jobs = searcher.search(url);
-        System.out.println("=== FOUND " + jobs.size() + " JOBS ===\n");
+        List<String> urls = searcher.search(url);
+        System.out.println("=== FOUND " + urls.size() + " JOBS ===\n");
 
-        jobs.forEach(System.out::println);
-        assertFalse(jobs.isEmpty(), "Should find at least one job in fixture");
+        urls.forEach(System.out::println);
+        assertFalse(urls.isEmpty(), "Should find at least one job in fixture");
     }
 
     @Test
     void searchCwjobsPrintsDom() {
         TotaljobsSpecificSearcher searcher = new TotaljobsSpecificSearcher(contentProvider);
         String url = "https://www.cwjobs.co.uk/jobs/java?wt=20&wt=50&page=1";
-        List<TotaljobsSearchResult> jobs = searcher.search(url);
-        System.out.println("=== FOUND " + jobs.size() + " JOBS ===\n");
+        List<String> urls = searcher.search(url);
+        System.out.println("=== FOUND " + urls.size() + " JOBS ===\n");
 
-        jobs.forEach(System.out::println);
-        assertFalse(jobs.isEmpty(), "Should find at least one job in fixture");
+        urls.forEach(System.out::println);
+        assertFalse(urls.isEmpty(), "Should find at least one job in fixture");
     }
 }
