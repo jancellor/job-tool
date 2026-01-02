@@ -2,7 +2,6 @@ package uk.jchancellor.jobtool.fetching;
 
 import org.springframework.stereotype.Component;
 import uk.jchancellor.jobtool.jobs.Job;
-import uk.jchancellor.jobtool.scraping.ContentProvider;
 
 import java.util.List;
 
@@ -11,9 +10,10 @@ public class GenericFetcher {
 
     private final List<Fetcher> fetchers;
 
-    public GenericFetcher(ContentProvider contentProvider) {
+    public GenericFetcher(
+            TotaljobsFetcher totaljobsFetcher) {
         this.fetchers = List.of(
-                new TotaljobsFetcher(contentProvider));
+                totaljobsFetcher);
     }
 
     public Job fetch(String url) {

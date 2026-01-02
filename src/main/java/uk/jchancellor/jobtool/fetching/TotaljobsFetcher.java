@@ -3,12 +3,14 @@ package uk.jchancellor.jobtool.fetching;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.stereotype.Component;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.TotaljobsJob;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
 
 import java.util.stream.Stream;
 
+@Component
 public class TotaljobsFetcher implements Fetcher {
 
     private final ContentProvider contentProvider;
@@ -36,7 +38,7 @@ public class TotaljobsFetcher implements Fetcher {
                 .company(extractText(element, "[data-at=metadata-company-name]"))
                 .location(extractText(element, "[data-at=metadata-location]"))
                 .employmentType(extractText(element, "[data-at=metadata-work-type]"))
-                .postedAgo(extractText(element, "[data-at=metadata-online-date]"))
+                .publishedText(extractText(element, "[data-at=metadata-online-date]"))
                 .salary(extractText(element, "[data-at=metadata-salary]"))
                 .description(extractText(element, "[data-at=section-text-jobDescription-content]"))
                 .build();

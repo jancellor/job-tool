@@ -2,17 +2,11 @@ package uk.jchancellor.jobtool.analysis;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-@Builder
 @Getter
 @ToString
 @JsonClassDescription("A result of analyzing a job description with fields set to null if unknown")
@@ -25,11 +19,11 @@ public class DescriptionAnalysis {
         private Integer remoteScore;
 
         @JsonPropertyDescription("The programming languages required from most important to least")
-        List<String> requiredLanguages;
+        private List<String> requiredLanguages;
 
         @JsonPropertyDescription("The skills required from most important to least")
-        List<String> requiredSkills;
+        private List<String> requiredSkills;
 
         @JsonPropertyDescription("The languages/skills explicitly mentioned as nice-to-have but not required")
-        List<String> optionalSkills;
+        private List<String> optionalSkills;
 }

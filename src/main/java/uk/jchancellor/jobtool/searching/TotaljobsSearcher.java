@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.searches.Search;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 @Slf4j
 public class TotaljobsSearcher implements Searcher {
 

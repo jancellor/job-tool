@@ -10,10 +10,8 @@ AI agents should not work on these tasks unless I explicitly them you to.
 
 ## Task list
 
-- Do AI analysis on other fields, including posted date.
+- Do AI analysis on other fields.
 - Keep formatting in job listings somehow.
 - Use abbreviations in UI to save space.
-- Undo adapter pattern in searcher.
 - Add indeed.
 - Add Google Jobs.
-- Flatten package structure.

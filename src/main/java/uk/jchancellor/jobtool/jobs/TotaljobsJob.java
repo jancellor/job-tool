@@ -20,7 +20,7 @@ public class TotaljobsJob {
     private String location;
     private String employmentType;
     private String salary;
-    private String postedAgo;
+    private String publishedText;
     @Unindexed
     private String description;
 }

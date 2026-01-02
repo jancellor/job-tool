@@ -22,7 +22,7 @@ public class JobViewController {
 
     @GetMapping("/")
     public String listJobs(
-            @RequestParam(required = false, defaultValue = "lastAnalyzedAt") String sort,
+            @RequestParam(required = false, defaultValue = "publishedDate") String sort,
             @RequestParam(required = false, defaultValue = "desc") String direction,
             Model model) {
 
@@ -30,7 +30,8 @@ public class JobViewController {
                 ? Sort.Direction.ASC
                 : Sort.Direction.DESC;
 
-        Iterable<Job> jobs = jobRepository.findAll(Sort.by(sortDirection, sort));
+        Sort sortOrder = Sort.by(sortDirection, sort).and(Sort.by(Sort.Direction.ASC, "url"));
+        Iterable<Job> jobs = jobRepository.findAll(sortOrder);
 
         model.addAttribute("jobs", jobs);
         model.addAttribute("currentSort", sort);
