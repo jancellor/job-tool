@@ -53,11 +53,11 @@ public class PlaywrightContentProvider implements ContentProvider {
     }
 
     private void saveHtml(String url, String content) {
-        // Normalize URL for filename: remove protocol, remove www., replace slashes with dashes
+        // Normalize URL for filename: remove protocol, remove www., replace special characters with dashes
         String filename = url
                 .replaceFirst("^https?://", "")
                 .replaceFirst("^www\\.", "")
-                .replace("/", "-")
+                .replaceAll("[/:;%()]", "-")
                 + ".html";
 
         Path htmlPath = Paths.get("example-html-files", filename);

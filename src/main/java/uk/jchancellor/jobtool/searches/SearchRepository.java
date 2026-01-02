@@ -9,6 +9,12 @@ public class SearchRepository {
     public List<Search> findAll() {
         return List.of(
                 Search.builder()
+                        .boardName("uk.indeed")
+                        .query("java")
+                        .employmentType("contract")
+                        .remote(true)
+                        .build(),
+                Search.builder()
                         .boardName("totaljobs")
                         .query("java")
                         .employmentType("contract")

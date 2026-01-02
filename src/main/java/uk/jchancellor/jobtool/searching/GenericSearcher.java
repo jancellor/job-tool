@@ -11,8 +11,10 @@ public class GenericSearcher {
     private final List<Searcher> searchers;
 
     public GenericSearcher(
+            IndeedSearcher indeedSearcher,
             TotaljobsSearcher totaljobsSearcher) {
         this.searchers = List.of(
+                indeedSearcher,
                 totaljobsSearcher);
     }
 

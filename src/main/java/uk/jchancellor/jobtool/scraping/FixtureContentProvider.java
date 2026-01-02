@@ -25,11 +25,11 @@ public class FixtureContentProvider implements ContentProvider {
     public String getContent(String url) {
         log.debug("Getting fixture content for URL: {}", url);
 
-        // Normalize URL for matching: remove protocol, remove www., replace slashes with dashes
+        // Normalize URL for matching: remove protocol, remove www., replace special characters with dashes
         String normalizedUrl = url
                 .replaceFirst("^https?://", "")  // Remove http:// or https://
                 .replaceFirst("^www\\.", "")      // Remove www.
-                .replace("/", "-");               // Replace slashes with dashes
+                .replaceAll("[/:;%()]", "-");    // Replace special characters with dashes
 
         log.debug("Normalized URL: {}", normalizedUrl);
 

@@ -18,17 +18,17 @@ import java.util.Optional;
 
 @Component
 @Slf4j
-public class TotaljobsSearcher implements Searcher {
+public class IndeedSearcher implements Searcher {
 
     private final ContentProvider contentProvider;
 
-    public TotaljobsSearcher(ContentProvider contentProvider) {
+    public IndeedSearcher(ContentProvider contentProvider) {
         this.contentProvider = contentProvider;
     }
 
     @Override
     public boolean canHandle(String boardName) {
-        return List.of("totaljobs", "cwjobs").contains(boardName);
+        return boardName.endsWith("indeed");
     }
 
     @Override
@@ -46,52 +46,59 @@ public class TotaljobsSearcher implements Searcher {
                 .pathSegment("jobs");
 
         if (search.getQuery() != null && !search.getQuery().isEmpty()) {
-            String pathSegment = search.getQuery().replace(" ", "-");
-            builder.pathSegment(pathSegment);
+            builder.queryParam("q", search.getQuery());
         }
 
-        if (search.getEmploymentType() != null) {
-            if (search.getEmploymentType().equalsIgnoreCase("contract")) {
-                builder.queryParam("wt", "20");
-            } else if (search.getEmploymentType().equalsIgnoreCase("permanent")) {
-                builder.queryParam("wt", "10");
-            }
+        if (search.getLocation() != null) {
+            builder.queryParam("l", search.getLocation());
         }
 
-        if (search.getRemote()) {
-            builder.queryParam("wt", "50");
+        String filterString = buildFilterString(search);
+        if (filterString != null) {
+            builder.queryParam("sc", filterString);
         }
-
-        builder.queryParam("page", "1");
 
         return builder.toUriString();
     }
 
+    private String buildFilterString(Search search) {
+        StringBuilder filters = new StringBuilder();
+        if (search.getRemote()) {
+            filters.append("attr(DSQF7)");
+        }
+        if (search.getEmploymentType() != null) {
+            if (search.getEmploymentType().equals("contract")) {
+                filters.append("attr(T9BXE)");
+            } else if (search.getEmploymentType().equals("permanent")) {
+                filters.append("attr(5QWDV)");
+            }
+        }
+        return !filters.isEmpty() ? "0kf:" + filters + ";" : null;
+    }
+
     private String determineBaseUrl(String boardName) {
         var baseUrls = Map.of(
-                "cwjobs", "https://www.cwjobs.co.uk",
-                "totaljobs", "https://www.totaljobs.com"
+                "uk.indeed", "https://uk.indeed.com"
         );
         return Optional.ofNullable(baseUrls.get(boardName)).orElseThrow();
     }
 
     private List<String> extractJobs(String html, String url) {
         Document doc = Jsoup.parse(html);
-        Elements jobElements = doc.select("[data-at=job-item]");
-        return jobElements.stream()
-                .flatMap(jobElement -> extractHref(jobElement, "[data-at=job-item-title]", url).stream())
+        Elements jobLinks = doc.select("a[data-jk]");
+        return jobLinks.stream()
+                .flatMap(link -> resolveHref(link, url).stream())
                 .toList();
     }
 
-    private Optional<String> extractHref(Element parent, String cssQuery, String url) {
-        Element element = parent.selectFirst(cssQuery);
+    private Optional<String> resolveHref(Element element, String baseUrl) {
         if (element != null && element.hasAttr("href")) {
             String href = element.attr("href");
             try {
-                URI base = new URI(url);
+                URI base = new URI(baseUrl);
                 return Optional.of(base.resolve(href).toString());
             } catch (URISyntaxException e) {
-                log.warn("Failed to resolve href '{}' with base URL '{}'", href, url, e);
+                log.warn("Failed to resolve href '{}' with base URL '{}'", href, baseUrl, e);
             }
         }
         return Optional.empty();
