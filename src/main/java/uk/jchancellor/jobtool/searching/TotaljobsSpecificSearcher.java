@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool.scraping.searching.totaljobs;
+package uk.jchancellor.jobtool.searching;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -6,7 +6,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
-import uk.jchancellor.jobtool.scraping.searching.SpecificSearcher;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool;
+package uk.jchancellor.jobtool.api;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

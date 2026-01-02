@@ -3,7 +3,7 @@ package uk.jchancellor.jobtool.analysis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.jchancellor.jobtool.jobs.Job;
-import uk.jchancellor.jobtool.scraping.fetching.totaljobs.TotaljobsJob;
+import uk.jchancellor.jobtool.jobs.TotaljobsJob;
 
 @Slf4j
 @Component

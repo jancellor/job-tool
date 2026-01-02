@@ -1,9 +1,7 @@
-package uk.jchancellor.jobtool.scraping.searching;
+package uk.jchancellor.jobtool.searching;
 
 import org.springframework.stereotype.Component;
-import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
-import uk.jchancellor.jobtool.scraping.searching.totaljobs.TotaljobsSearcher;
 import uk.jchancellor.jobtool.searches.Search;
 
 import java.util.List;

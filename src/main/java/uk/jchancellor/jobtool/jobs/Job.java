@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.With;
 import org.springframework.data.annotation.Id;
-import uk.jchancellor.jobtool.scraping.fetching.totaljobs.TotaljobsJob;
 
 import java.time.Instant;
 import java.time.LocalDate;

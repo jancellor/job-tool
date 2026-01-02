@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool;
+package uk.jchancellor.jobtool.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -6,7 +6,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
-import uk.jchancellor.jobtool.scraping.searching.GenericSearcher;
+import uk.jchancellor.jobtool.searching.GenericSearcher;
 import uk.jchancellor.jobtool.searches.Search;
 import uk.jchancellor.jobtool.searches.SearchRepository;
 

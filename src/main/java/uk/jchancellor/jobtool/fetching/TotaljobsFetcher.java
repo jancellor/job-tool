@@ -1,11 +1,11 @@
-package uk.jchancellor.jobtool.scraping.fetching.totaljobs;
+package uk.jchancellor.jobtool.fetching;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import uk.jchancellor.jobtool.jobs.Job;
+import uk.jchancellor.jobtool.jobs.TotaljobsJob;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
-import uk.jchancellor.jobtool.scraping.fetching.Fetcher;
 
 import java.util.stream.Stream;
 

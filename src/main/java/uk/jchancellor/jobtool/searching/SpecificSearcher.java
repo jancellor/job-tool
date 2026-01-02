@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool.scraping.searching;
+package uk.jchancellor.jobtool.searching;
 
 import java.util.List;
 

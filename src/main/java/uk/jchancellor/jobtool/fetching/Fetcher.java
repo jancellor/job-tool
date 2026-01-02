@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool.scraping.fetching;
+package uk.jchancellor.jobtool.fetching;
 
 import uk.jchancellor.jobtool.jobs.Job;
 

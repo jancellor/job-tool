@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool.scraping.fetching.totaljobs;
+package uk.jchancellor.jobtool.jobs;
 
 import com.google.cloud.spring.data.datastore.core.mapping.Entity;
 import com.google.cloud.spring.data.datastore.core.mapping.Unindexed;

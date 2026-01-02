@@ -1,7 +1,6 @@
-package uk.jchancellor.jobtool.scraping.searching.totaljobs;
+package uk.jchancellor.jobtool.searching;
 
 import org.springframework.web.util.UriComponentsBuilder;
-import uk.jchancellor.jobtool.scraping.searching.SearcherAdapter;
 import uk.jchancellor.jobtool.searches.Search;
 
 import java.util.List;

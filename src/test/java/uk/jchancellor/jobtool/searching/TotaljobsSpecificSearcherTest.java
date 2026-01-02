@@ -1,10 +1,11 @@
-package uk.jchancellor.jobtool.scraping.searching.totaljobs;
+package uk.jchancellor.jobtool.searching;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
+import uk.jchancellor.jobtool.searching.TotaljobsSpecificSearcher;
 
 import java.util.List;
 

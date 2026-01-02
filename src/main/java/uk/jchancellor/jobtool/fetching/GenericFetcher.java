@@ -1,9 +1,8 @@
-package uk.jchancellor.jobtool.scraping.fetching;
+package uk.jchancellor.jobtool.fetching;
 
 import org.springframework.stereotype.Component;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
-import uk.jchancellor.jobtool.scraping.fetching.totaljobs.TotaljobsFetcher;
 
 import java.util.List;
 

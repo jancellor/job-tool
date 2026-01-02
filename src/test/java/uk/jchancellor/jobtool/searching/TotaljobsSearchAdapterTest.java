@@ -1,7 +1,8 @@
-package uk.jchancellor.jobtool.scraping.searching.totaljobs;
+package uk.jchancellor.jobtool.searching;
 
 import org.junit.jupiter.api.Test;
 import uk.jchancellor.jobtool.searches.Search;
+import uk.jchancellor.jobtool.searching.TotaljobsSearchAdapter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,10 +1,11 @@
-package uk.jchancellor.jobtool.scraping.fetching.totaljobs;
+package uk.jchancellor.jobtool.fetching;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import uk.jchancellor.jobtool.fetching.TotaljobsFetcher;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
 

@@ -1,4 +1,4 @@
-package uk.jchancellor.jobtool;
+package uk.jchancellor.jobtool.api;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
