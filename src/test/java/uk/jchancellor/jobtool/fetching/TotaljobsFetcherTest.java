@@ -2,24 +2,18 @@ package uk.jchancellor.jobtool.fetching;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import uk.jchancellor.jobtool.fetching.TotaljobsFetcher;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
+import uk.jchancellor.jobtool.scraping.FixtureContentProvider;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@TestPropertySource(properties = "job-tool.mock-boards=true")
 @Slf4j
 class TotaljobsFetcherTest {
 
-    @Autowired
-    private ContentProvider contentProvider;
+    private final ContentProvider contentProvider = new FixtureContentProvider();
 
     @Test
     void testCanHandle() {
@@ -35,12 +29,12 @@ class TotaljobsFetcherTest {
     @Test
     void testFetchTotaljobsJob() {
         TotaljobsFetcher fetcher = new TotaljobsFetcher(contentProvider);
-        String testUrl = "https://www.totaljobs.com/job/2026-software-engineering-graduate/thales-group-job106375756";
+        String testUrl = "https://www.totaljobs.com/job/java-software-engineer/morson-edge-job106265618";
         Job result = fetcher.fetch(testUrl);
         log.info("Fetch result: {}", result);
 
         assertNotNull(result);
-        assertNotNull(result.getTitle());
-        assertNotNull(result.getCompany());
+        assertNotNull(result.getTotaljobsJob().getTitle());
+        assertNotNull(result.getTotaljobsJob().getCompany());
     }
 }
