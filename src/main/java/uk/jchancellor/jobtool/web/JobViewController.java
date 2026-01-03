@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import uk.jchancellor.jobtool.cleaning.HtmlCleaner;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
 
@@ -15,9 +16,11 @@ import java.util.Base64;
 public class JobViewController {
 
     private final JobRepository jobRepository;
+    private final HtmlCleaner htmlCleaner;
 
-    public JobViewController(JobRepository jobRepository) {
+    public JobViewController(JobRepository jobRepository, HtmlCleaner htmlCleaner) {
         this.jobRepository = jobRepository;
+        this.htmlCleaner = htmlCleaner;
     }
 
     @GetMapping("/")
@@ -48,6 +51,7 @@ public class JobViewController {
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
         model.addAttribute("job", job);
+        model.addAttribute("cleanedDescription", htmlCleaner.clean(job.getDescription()));
         model.addAttribute("encodedUrl", encodedUrl);
 
         return "detail";

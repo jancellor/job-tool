@@ -44,6 +44,7 @@ public class Job {
     @Unindexed
     private String snippet;
     @Unindexed
+    @ToString.Exclude
     private String description;
     private String headline;
     private Integer remoteScore; // 0-5

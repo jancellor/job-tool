@@ -21,5 +21,6 @@ public class IndeedJob {
     private String salary;
     private String employmentType;
     @Unindexed
+    @ToString.Exclude
     private String description;
 }

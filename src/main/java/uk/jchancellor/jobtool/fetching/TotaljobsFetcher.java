@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
+import uk.jchancellor.jobtool.cleaning.HtmlCleaner;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.TotaljobsJob;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
@@ -14,9 +15,11 @@ import java.util.stream.Stream;
 public class TotaljobsFetcher implements Fetcher {
 
     private final ContentProvider contentProvider;
+    private final HtmlCleaner htmlCleaner;
 
-    public TotaljobsFetcher(ContentProvider contentProvider) {
+    public TotaljobsFetcher(ContentProvider contentProvider, HtmlCleaner htmlCleaner) {
         this.contentProvider = contentProvider;
+        this.htmlCleaner = htmlCleaner;
     }
 
     public boolean canHandle(String url) {
@@ -40,12 +43,21 @@ public class TotaljobsFetcher implements Fetcher {
                 .employmentType(extractText(element, "[data-at=metadata-work-type]"))
                 .publishedText(extractText(element, "[data-at=metadata-online-date]"))
                 .salary(extractText(element, "[data-at=metadata-salary]"))
-                .description(extractText(element, "[data-at=section-text-jobDescription-content]"))
+                .description(extractSafeHtml(element, "[data-at=section-text-jobDescription-content]"))
                 .build();
     }
 
     private String extractText(Element searchScope, String cssQuery) {
         var element = searchScope.selectFirst(cssQuery);
         return element != null ? element.text().trim() : null;
+    }
+
+    private String extractSafeHtml(Element searchScope, String cssQuery) {
+        var element = searchScope.selectFirst(cssQuery);
+        if (element == null) {
+            return null;
+        }
+        String html = element.html();
+        return htmlCleaner.clean(html);
     }
 }

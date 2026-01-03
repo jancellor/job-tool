@@ -68,7 +68,7 @@
                     <div class="col-12" th:if="${job.description}">
                         <h2 class="small text-uppercase fw-semibold text-muted mb-2">Description</h2>
                         <div class="bg-light p-3 rounded border">
-                            <p class="mb-0 text-break" style="white-space: pre-wrap;" th:text="${job.description}">Description</p>
+                            <div class="text-break" th:utext="${cleanedDescription}">Description</div>
                         </div>
                     </div>
 

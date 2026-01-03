@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
+import uk.jchancellor.jobtool.cleaning.HtmlCleaner;
 import uk.jchancellor.jobtool.jobs.IndeedJob;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.ContentProvider;
@@ -12,9 +13,11 @@ import uk.jchancellor.jobtool.scraping.ContentProvider;
 public class IndeedFetcher implements Fetcher {
 
     private final ContentProvider contentProvider;
+    private final HtmlCleaner htmlCleaner;
 
-    public IndeedFetcher(ContentProvider contentProvider) {
+    public IndeedFetcher(ContentProvider contentProvider, HtmlCleaner htmlCleaner) {
         this.contentProvider = contentProvider;
+        this.htmlCleaner = htmlCleaner;
     }
 
     public boolean canHandle(String url) {
@@ -63,12 +66,21 @@ public class IndeedFetcher implements Fetcher {
                 .location(extractText(doc, "[data-testid=jobsearch-JobInfoHeader-companyLocation]"))
                 .salary(salary)
                 .employmentType(employmentType)
-                .description(extractText(doc, "div#jobDescriptionText"))
+                .description(extractSafeHtml(doc, "div#jobDescriptionText"))
                 .build();
     }
 
     private String extractText(Element searchScope, String cssQuery) {
         var element = searchScope.selectFirst(cssQuery);
         return element != null ? element.text().trim() : null;
+    }
+
+    private String extractSafeHtml(Element searchScope, String cssQuery) {
+        var element = searchScope.selectFirst(cssQuery);
+        if (element == null) {
+            return null;
+        }
+        String html = element.html();
+        return htmlCleaner.clean(html);
     }
 }

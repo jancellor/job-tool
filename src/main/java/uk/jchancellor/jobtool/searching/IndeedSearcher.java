@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -94,13 +95,36 @@ public class IndeedSearcher implements Searcher {
     private Optional<String> resolveHref(Element element, String baseUrl) {
         if (element != null && element.hasAttr("href")) {
             String href = element.attr("href");
+            if (!href.startsWith("/rc")) {
+                return Optional.empty();
+            }
             try {
                 URI base = new URI(baseUrl);
-                return Optional.of(base.resolve(href).toString());
+                URI resolved = base.resolve(href);
+                return filterQueryParams(resolved);
             } catch (URISyntaxException e) {
                 log.warn("Failed to resolve href '{}' with base URL '{}'", href, baseUrl, e);
             }
         }
         return Optional.empty();
+    }
+
+    private Optional<String> filterQueryParams(URI uri) {
+        Set<String> allowedParams = Set.of("jk", "vjs");
+        var builder = UriComponentsBuilder.fromUri(uri).replaceQuery(null);
+        var params = UriComponentsBuilder.fromUri(uri).build().getQueryParams();
+        List<String> jkValues = params.get("jk");
+        if (jkValues == null || jkValues.isEmpty()) {
+            return Optional.empty();
+        }
+        for (String allowed : allowedParams) {
+            List<String> values = params.get(allowed);
+            if (values != null) {
+                for (String value : values) {
+                    builder.queryParam(allowed, value);
+                }
+            }
+        }
+        return Optional.of(builder.build(true).toUriString());
     }
 }

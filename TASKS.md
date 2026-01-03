@@ -13,5 +13,6 @@ AI agents should not work on these tasks unless I explicitly them you to.
 - Do AI analysis on other fields.
 - Keep formatting in job listings somehow.
 - Use abbreviations in UI to save space.
-- Add indeed.
-- Add Google Jobs.
+- Add Google Jobs, ITJobsWatch, etc.
+- Manage searches in DB.
+- Scheduling strategy.

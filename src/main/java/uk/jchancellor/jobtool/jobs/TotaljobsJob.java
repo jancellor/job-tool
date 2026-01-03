@@ -22,5 +22,6 @@ public class TotaljobsJob {
     private String salary;
     private String publishedText;
     @Unindexed
+    @ToString.Exclude
     private String description;
 }
