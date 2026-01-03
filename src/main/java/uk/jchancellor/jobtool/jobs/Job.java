@@ -25,11 +25,14 @@ public class Job {
     @Id
     private String url;
     @With
-    private Instant lastSearchedAt;
+    @Builder.Default
+    private Instant lastSearchedAt = Instant.EPOCH;
     @With
-    private Instant lastFetchedAt;
+    @Builder.Default
+    private Instant lastFetchedAt = Instant.EPOCH;
     @With
-    private Instant lastAnalyzedAt;
+    @Builder.Default
+    private Instant lastAnalyzedAt = Instant.EPOCH;
     private IndeedJob indeedJob;
     private TotaljobsJob totaljobsJob;
     private String title;

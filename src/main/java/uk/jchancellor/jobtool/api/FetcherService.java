@@ -2,12 +2,14 @@ package uk.jchancellor.jobtool.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import uk.jchancellor.jobtool.fetching.GenericFetcher;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.jobs.JobRepository;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Service
@@ -18,6 +20,9 @@ public class FetcherService {
     private final GenericFetcher genericFetcher;
     private final ObjectMerger objectMerger;
     private final TaskExecutor taskExecutor;
+
+    @Value("${job-tool.minimum-fetch-interval:PT1H}")
+    private Duration minimumFetchInterval;
 
     public FetcherService(
             JobRepository jobRepository,
@@ -33,7 +38,8 @@ public class FetcherService {
     public void fetchAll() {
         log.info("Fetching jobs");
         Instant now = Instant.now();
-        jobRepository.findAll()
+        Instant cutoffTime = now.minus(minimumFetchInterval);
+        jobRepository.findByLastFetchedAtLessThanOrderByLastFetchedAtAsc(cutoffTime)
                 .forEach(existingJob -> fetchAndUpdateJob(existingJob, now));
     }
 

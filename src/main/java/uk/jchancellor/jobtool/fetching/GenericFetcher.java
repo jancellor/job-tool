@@ -11,8 +11,10 @@ public class GenericFetcher {
     private final List<Fetcher> fetchers;
 
     public GenericFetcher(
+            IndeedFetcher indeedFetcher,
             TotaljobsFetcher totaljobsFetcher) {
         this.fetchers = List.of(
+                indeedFetcher,
                 totaljobsFetcher);
     }
 

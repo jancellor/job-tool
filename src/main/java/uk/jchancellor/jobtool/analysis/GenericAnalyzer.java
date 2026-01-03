@@ -10,8 +10,12 @@ public class GenericAnalyzer {
 
     private final List<Analyzer> analyzers;
 
-    public GenericAnalyzer(TotaljobsAnalyzer totaljobsAnalyzer) {
-        this.analyzers = List.of(totaljobsAnalyzer);
+    public GenericAnalyzer(
+            IndeedAnalyzer indeedAnalyzer,
+            TotaljobsAnalyzer totaljobsAnalyzer) {
+        this.analyzers = List.of(
+                indeedAnalyzer,
+                totaljobsAnalyzer);
     }
 
     public Job analyze(Job job) {
