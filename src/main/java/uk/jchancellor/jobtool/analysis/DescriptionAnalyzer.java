@@ -13,7 +13,7 @@ public class DescriptionAnalyzer {
     }
 
     public DescriptionAnalysis analyze(String description) {
-        return description == null ? null : chatClient.prompt()
+        return description == null ? new DescriptionAnalysis() : chatClient.prompt()
                 .user("Analyze the following job description and extract the requested information:\n\n" + description)
                 .call()
                 .entity(DescriptionAnalysis.class);

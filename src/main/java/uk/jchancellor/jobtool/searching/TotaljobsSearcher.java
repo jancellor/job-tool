@@ -43,7 +43,10 @@ public class TotaljobsSearcher implements Searcher {
         String baseUrl = determineBaseUrl(search.getBoardName());
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(baseUrl)
-                .pathSegment("jobs");
+                .pathSegment("jobs")
+                .queryParam("sort", "2"); // published
+
+        // note add "page=2", etc - note, 25 results per page
 
         if (search.getQuery() != null && !search.getQuery().isEmpty()) {
             String pathSegment = search.getQuery().replace(" ", "-");

@@ -44,7 +44,10 @@ public class IndeedSearcher implements Searcher {
         String baseUrl = determineBaseUrl(search.getBoardName());
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(baseUrl)
-                .pathSegment("jobs");
+                .pathSegment("jobs")
+                .queryParam("sort", "date");
+
+        // note adding "start=10" is how you skip the first 10 results and get page 2
 
         if (search.getQuery() != null && !search.getQuery().isEmpty()) {
             builder.queryParam("q", search.getQuery());

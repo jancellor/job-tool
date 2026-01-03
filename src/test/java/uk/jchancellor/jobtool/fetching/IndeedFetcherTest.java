@@ -2,6 +2,7 @@ package uk.jchancellor.jobtool.fetching;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import uk.jchancellor.jobtool.cleaning.HtmlCleaner;
 import uk.jchancellor.jobtool.jobs.Job;
 import uk.jchancellor.jobtool.scraping.FixtureContentProvider;
 
@@ -12,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 class IndeedFetcherTest {
 
-    private final IndeedFetcher fetcher = new IndeedFetcher(new FixtureContentProvider());
+    private final IndeedFetcher fetcher = new IndeedFetcher(
+            new FixtureContentProvider(),
+            new HtmlCleaner());
 
     @Test
     void testCanHandle() {
