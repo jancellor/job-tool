@@ -3,7 +3,6 @@ package uk.jchancellor.jobtool.fetching;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import uk.jchancellor.jobtool.jobs.Job;
-import uk.jchancellor.jobtool.scraping.ContentProvider;
 import uk.jchancellor.jobtool.scraping.FixtureContentProvider;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -13,11 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 class TotaljobsFetcherTest {
 
-    private final ContentProvider contentProvider = new FixtureContentProvider();
+    private final TotaljobsFetcher fetcher = new TotaljobsFetcher(new FixtureContentProvider());
 
     @Test
     void testCanHandle() {
-        TotaljobsFetcher fetcher = new TotaljobsFetcher(contentProvider);
         assertTrue(fetcher.canHandle("https://www.totaljobs.com/job/123"));
         assertTrue(fetcher.canHandle("http://totaljobs.com/job/abc"));
         assertTrue(fetcher.canHandle("https://www.cwjobs.co.uk/job/123"));
@@ -28,7 +26,6 @@ class TotaljobsFetcherTest {
 
     @Test
     void testFetchTotaljobsJob() {
-        TotaljobsFetcher fetcher = new TotaljobsFetcher(contentProvider);
         String testUrl = "https://www.totaljobs.com/job/java-software-engineer/morson-edge-job106265618";
         Job result = fetcher.fetch(testUrl);
         log.info("Fetch result: {}", result);

@@ -29,7 +29,7 @@ public class FixtureContentProvider implements ContentProvider {
         String normalizedUrl = url
                 .replaceFirst("^https?://", "")  // Remove http:// or https://
                 .replaceFirst("^www\\.", "")      // Remove www.
-                .replaceAll("[/:;%()]", "-");    // Replace special characters with dashes
+                .replaceAll("[^a-zA-Z0-9.]", "-");    // Replace non-alphanumeric characters (except dots) with dashes
 
         log.debug("Normalized URL: {}", normalizedUrl);
 

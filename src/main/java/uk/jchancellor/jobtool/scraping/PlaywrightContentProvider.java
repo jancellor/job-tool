@@ -57,7 +57,7 @@ public class PlaywrightContentProvider implements ContentProvider {
         String filename = url
                 .replaceFirst("^https?://", "")
                 .replaceFirst("^www\\.", "")
-                .replaceAll("[/:;%()]", "-")
+                .replaceAll("[^a-zA-Z0-9.]", "-")
                 + ".html";
 
         Path htmlPath = Paths.get("example-html-files", filename);

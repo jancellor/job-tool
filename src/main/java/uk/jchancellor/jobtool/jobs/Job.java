@@ -30,6 +30,7 @@ public class Job {
     private Instant lastFetchedAt;
     @With
     private Instant lastAnalyzedAt;
+    private IndeedJob indeedJob;
     private TotaljobsJob totaljobsJob;
     private String title;
     private String company;
